@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Kacper Jagieła</title>
-    <script src="//cdn.8thwall.com/web/aframe/8frame-0.8.2.min.js"></script>
-    <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
-    <script async src="//apps.8thwall.com/xrweb?appKey=t4LDEvHGhdqxLMxnd9EitEIuP98tFnE1R9JORoPpdqSJvQ3kE9JfGR3lDeaJ83VlWpeAS9"></script>
 
-  </head>
-  <body>
-    <a-scene
-      xrweb
-      xrextras-tap-recenter
-      xrextras-almost-there
-      xrextras-loading
-      xrextras-runtime-error>
-    <a-assets>
-        <a-asset-item id='box' src="./box01.glb"></a-asset-item>
-    </a-assets>
-      <a-camera></a-camera>
-      <a-entity gltf-model='#box'></a-entity>
-    </a-scene>
-  </body>
+<head>
+	<meta charset='utf-8'>
+	<title>Kacper Jagieła</title>
+	<script src='//cdn.8thwall.com/web/aframe/8frame-0.8.2.min.js'></script>
+	<script src='//cdn.8thwall.com/web/xrextras/xrextras.js'></script>
+	<script async
+		src='//apps.8thwall.com/xrweb?appKey=t4LDEvHGhdqxLMxnd9EitEIuP98tFnE1R9JORoPpdqSJvQ3kE9JfGR3lDeaJ83VlWpeAS9'></script>
+	<script>
+		AFRAME.registerComponent('tap-place', {
+			init: () => {
+				const ground = document.getElementById('ground');
+				const box = document.getElementById('box');
+				ground.addEventListener('click', e => {
+					const touchPoint = e.detail.intersection.point;
+					box.setAttribute('position', touchPoint);
+					box.setAttribute('rotation', `0 , ${Math.random() * 360}, 0`);
+				});
+			}
+		})
+	</script>
+
+</head>
+
+<body>
+	<a-scene xrweb tap-place xrextras-almost-there xrextras-loading xrextras-runtime-error>
+		<a-assets>
+			<a-asset-item id='boxModel' src='./box01.glb'></a-asset-item>
+		</a-assets>
+		<a-camera position='0 8 0' raycaster='objects: .tapGround' cursor='
+				fuse: false;
+				rayOrigin: mouse;
+			'>
+		</a-camera>
+		<a-entity light='type: directional; intensity: 0.8;' position='1 4 2.5'></a-entity>
+		<a-light type='ambient' intensity='1'></a-light>
+		<a-entity scale='0.5 0.5 0.5' gltf-model='#boxModel' id='box'>
+		</a-entity>
+		<a-entity id='ground' class='tapGround' geometry='primitive: box'
+			material='color: #ffffff; transparent: true; opacity: 0.0' scale='1000 2 1000' position='0 -1 0'>
+		</a-entity>
+	</a-scene>
+</body>
+
 </html>
