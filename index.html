@@ -12,13 +12,14 @@
 	<script>
 		AFRAME.registerComponent('tap-place', {
 			init: () => {
+				console.log('1');
 				const ground = document.getElementById('ground');
-				const box = document.getElementById('box');
 				ground.addEventListener('click', e => {
 					console.log(e.detail);
+					const box = document.getElementById('box');
 					const touchPoint = e.detail.intersection.point;
-					// box.setAttribute('position', touchPoint);
-					box.setAttribuet('scale', '0.8 0.8 0.8')
+					box.setAttribute('position', touchPoint);
+					box.setAttribute('scale', '0.8 0.8 0.8')
 					box.setAttribute('rotation', `0, ${Math.random() * 360}, 0`);
 				});
 			}
